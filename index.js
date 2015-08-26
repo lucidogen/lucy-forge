@@ -45,7 +45,8 @@ const lib = {}
 
 /////////////////////////////// Private
 
-const loadPaths = []
+const loadPaths  = []
+const components = {}
 
 const dirFromCaller = function ( caller_id ) {
   return path.dirname
@@ -120,12 +121,32 @@ lib.loadPaths = function ()
 { return loadPaths.slice ( 0 )
 }
 
+/** Return an object with all known (loaded) components.
+ */
+lib.components = function ()
+{ return components
+}
+
 /* Create a new component.
  *
  */
-lib.Component = function ()
-{
+lib.Component = function ( name, definition )
+{ let self = components [ name ] || {}
+  components [ name ] = self
+  let info = self._info || {}
+  info.name = name
+  self._info = info
 
+  self.type = 'forge.Component'
+
+  definition = definition || {}
+
+  for ( let key in definition )
+  { if ( definition.hasOwnProperty ( key ) )
+    { self [ key ] = definition [ key ]
+    }
+  }
+  return self
 }
 
 lib.Entity = function ()

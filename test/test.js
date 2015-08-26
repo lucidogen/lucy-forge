@@ -10,9 +10,11 @@ const base  = path.resolve ( __dirname, 'fixtures' )
 
 describe ( 'forge'
 , function ()
-  { describe ( '#addLoadPath'
+  { describe
+    ( '#addLoadPath'
     , function ()
-      { it ( 'should add load path'
+      { it
+        ( 'should add load path'
         , function ()
           { let p = './fixtures'
             forge.addLoadPath ( p )
@@ -26,7 +28,8 @@ describe ( 'forge'
           }
         )
 
-        it ( 'should not add path twice'
+        it
+        ( 'should not add path twice'
         , function ()
           { let p = './fixtures'
             forge.addLoadPath ( p )
@@ -41,7 +44,8 @@ describe ( 'forge'
           }
         )
 
-        it ( 'should check path validity'
+        it
+        ( 'should check path validity'
         , function ()
           { let p = './badpath'
             let f = function ()
@@ -54,6 +58,43 @@ describe ( 'forge'
             { forge.addLoadPath ( p )
             }
             f.should.throw ( /not a directory/ )
+          }
+        )
+      }
+    )
+    
+    describe
+    ( 'Component'
+    , function ()
+      { it
+        ( 'should create component'
+        , function ()
+          { let p = forge.Component ( 'Bar' )
+            p.type
+            .should.equal ( 'forge.Component' )
+          }
+        )
+
+        it
+        ( 'should set name'
+        , function ()
+          { let p = forge.Component ( 'Bar' )
+            p._info.name
+            .should.equal ( 'Bar' )
+          }
+        )
+
+        it
+        ( 'should add component to known list'
+        , function ()
+          { let p = forge.Component
+            ( 'Foo'
+            )
+
+            forge.components ()
+            .Foo
+            .should.equal ( p )
+
           }
         )
       }
