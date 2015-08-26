@@ -106,7 +106,11 @@ describe ( 'forge'
         ( 'should add methods to component definition'
         , function ()
           { let def =
-            { foo: function ()
+            { init ()
+              { this._foo = 'Foo'
+              }
+
+            , foo ()
               { return 'I am foo.'
               }
             }
@@ -141,6 +145,18 @@ describe ( 'forge'
             let Foo = forge.components ().Foo
             e.foo
             .should.equal ( Foo.foo )
+          }
+        )
+
+        it
+        ( 'should call init from all components'
+        , function ()
+          { let e   = forge.Entity ( 'Name', 'Foo' )
+            e._name
+            .should.equal ( 'No name' )
+            
+            e._foo
+            .should.equal ( 'Foo' )
           }
         )
       }
