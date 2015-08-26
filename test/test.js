@@ -89,12 +89,58 @@ describe ( 'forge'
         , function ()
           { let p = forge.Component
             ( 'Foo'
+            , { foo: function ()
+                { return 'I am foo.'
+                }
+              }
             )
 
             forge.components ()
             .Foo
             .should.equal ( p )
 
+          }
+        )
+
+        it
+        ( 'should add methods to component definition'
+        , function ()
+          { let def =
+            { foo: function ()
+              { return 'I am foo.'
+              }
+            }
+            
+            let p = forge.Component ( 'Foo', def )
+
+            forge.components ()
+            .Foo.foo
+            .should.equal ( def.foo )
+
+          }
+        )
+      }
+    )
+
+    describe
+    ( 'Entity'
+    , function ()
+      { it
+        ( 'should create an entity'
+        , function ()
+          { let e = forge.Entity ( 'Name', 'Foo' )
+            e.type
+            .should.equal ( 'forge.Entity' )
+          }
+        )
+
+        it
+        ( 'should get a copy of component methods'
+        , function ()
+          { let e   = forge.Entity ( 'Name', 'Foo' )
+            let Foo = forge.components ().Foo
+            e.foo
+            .should.equal ( Foo.foo )
           }
         )
       }

@@ -101,6 +101,47 @@ const resolvePath = function ( aPath, paths, type )
   ( `Cannot resolve '${path}' (not found).` )
 }
 
+const findComponent = function ( name )
+{ let comp = components [ name ]
+  if ( comp )
+  { return comp
+  }
+
+  // Try to find a file to load in loadPaths
+  let f
+  try
+  { f = resolvePath ( `${name}.js`, loadPaths, 'f' )
+  }
+  catch (e)
+  { // no definition for this component found. Use a dummy component as 'family'
+    // marker.
+    let c = lib.Component ( name )
+    c._info.dummy = true
+    return c
+  }
+
+  // We could use live.require here but then we are async during component load
+  // operation...
+  // TODO: If forge.live == true, we do a 'require' and then a live.require to
+  // continue executing the component definition on file change.
+  let c = require ( f )
+  if ( c._info.name !== name )
+  { throw new Error
+    ( `Invalid component at path '${f}' (name '' does not match filename).`)
+  }
+
+  return c
+}
+
+const copyCompMethods = function ( target, source )
+{ for ( let key in source )
+  { if ( key != '_info' && key != 'init' && key != 'type' )
+    { if ( source.hasOwnProperty ( key ) )
+      { target [ key ] = source [ key ]
+      }
+    }
+  }
+}
 
 /////////////////////////////// Public
 
@@ -141,17 +182,27 @@ lib.Component = function ( name, definition )
 
   definition = definition || {}
 
-  for ( let key in definition )
-  { if ( definition.hasOwnProperty ( key ) )
-    { self [ key ] = definition [ key ]
-    }
-  }
+  copyCompMethods ( self, definition )
+
+  // 'init' is not copied by copyCompMethods
+  self.init = definition.init
+
   return self
 }
 
+/** Create a new entity from the given list of components.
+ */
 lib.Entity = function ()
-{
-
+{ let self = { type: 'forge.Entity' }
+  for ( let i = 0, len = arguments.length; i < len; i++ )
+  { let name = arguments [ i ]
+    let comp = findComponent ( name )
+    copyCompMethods ( self, comp )
+    if ( comp.init )
+    { comp.init.call ( self )
+    }
+  }
+  return self
 }
 
 module.exports = lib
