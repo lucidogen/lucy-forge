@@ -1,0 +1,37 @@
+{
+  "name": "lucy-forge",
+  "version": "0.1.0",
+  "license": "commercial",
+  "description": "A library for live coding.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lucidogen/lucy-forge.git"
+  },
+  "keywords": [
+    "composition",
+    "entity",
+    "game"
+  ],
+  "author": "Gaspard Bucher <gaspard@lucidogen.io> (http://lucidogen.io/)",
+  "licenses": [
+    {
+      "type": "commercial",
+      "url": "http://lucidity.io/license"
+    }
+  ],
+  "bugs": {
+    "url": "https://bitbucket.com/lucidogen/lucy-forge/issues"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "~1.16.2"
+  },
+  "dependencies": {
+    "caller": "^1.0.0"
+  }
+  
+}
