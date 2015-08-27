@@ -19,7 +19,10 @@ module.exports = forge.Component
 ( 'Core'
 , { _init () // Special case for Core.init to avoid calling it twice
              // once before and once inside #addComponent.
-    { this._core = { compNames: [] }
+    { this._core =
+      { compNames: []
+      , callbacksByEvent: {} // maps event => callback array
+      }
     }
 
   , addComponent ( compName )
@@ -58,6 +61,34 @@ module.exports = forge.Component
       }
 
       this._core.compNames = []
+    }
+    
+  , bind ( event, callback )
+    { let callbacksByEvent = this._core.callbacksByEvent
+      let callbacks = callbacksByEvent [ event ]
+      if ( ! callbacks )
+      { callbacksByEvent [ event ] = callback
+      }
+      else if ( typeof callbacks === 'function' )
+      { callbacksByEvent [ event ] = [ callbacks, callback ]
+      }
+      else
+      { callbacks.push ( callback )
+      }
+    }
+
+  , emit ( event, data )
+    { let callbacks = this._core.callbacksByEvent [ event ]
+      if ( ! callbacks ) return
+      if ( typeof callbacks === 'function' ) // single listener optimization
+      { callbacks.call ( this, data )
+      }
+      else
+      { for ( let i = 0, len = callbacks.length; i < len; i++ )
+        { callbacks [ i ]
+          .call ( this, data )
+        }
+      }
     }
 
   , _copyCompMethods

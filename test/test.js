@@ -10,7 +10,15 @@ const base  = path.resolve ( __dirname, '../components' )
 
 describe ( 'forge'
 , function ()
-  { describe
+  { let e
+
+    afterEach
+    ( function ()
+      { if ( e ) e.destroy ()
+      }
+    )
+    
+    describe
     ( '#addLoadPath'
     , function ()
       { it
@@ -152,15 +160,7 @@ describe ( 'forge'
     describe
     ( 'Entity'
     , function ()
-      { let e
-
-        afterEach
-        ( function ()
-          { e.destroy ()
-          }
-        )
-        
-        it
+      { it
         ( 'should create an entity'
         , function ()
           { e = forge.Entity ( 'Name', 'Foo' )
@@ -206,7 +206,37 @@ describe ( 'forge'
           }
         )
 
-        it
+        describe
+        ( 'Changing component during runtime'
+        , function ()
+          { it
+            ( 'should update created entities'
+            , function ()
+              { e = forge.Entity ( 'Name', 'Foo' )
+                e.foo ()
+                .should.equal ( 'I am foo.' )
+                
+                forge.Component
+                ( 'Foo'
+                , { foo ()
+                    { return 'I am new foo.'
+                    }
+                  }
+                )
+
+                e.foo ()
+                .should.equal ( 'I am new foo.' )
+              }
+            )
+          }
+        )
+      }
+    )
+
+    describe
+    ( 'Core'
+    , function ()
+      { it
         ( 'should add Core to all entities'
         , function ()
           { e = forge.Entity ( 'Foo' )
@@ -242,25 +272,27 @@ describe ( 'forge'
         )
 
         describe
-        ( 'Changing component during runtime'
+        ( '#bind'
         , function ()
           { it
-            ( 'should update created entities'
+            ( 'should execute callback with this on emit'
             , function ()
-              { let e = forge.Entity ( 'Name', 'Foo' )
-                e.foo ()
-                .should.equal ( 'I am foo.' )
-                
-                forge.Component
-                ( 'Foo'
-                , { foo ()
-                    { return 'I am new foo.'
-                    }
+              { e = forge.Entity ()
+                e._test = ''
+                e.bind
+                ( 'Hit'
+                , function ()
+                  { this._test = 'Hit Test'
                   }
                 )
 
-                e.foo ()
-                .should.equal ( 'I am new foo.' )
+                e.emit ( 'Other' )
+                e._test
+                .should.equal ( '' )
+                
+                e.emit ( 'Hit' )
+                e._test
+                .should.equal ( 'Hit Test' )
               }
             )
           }
