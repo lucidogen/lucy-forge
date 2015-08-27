@@ -44,8 +44,38 @@ module.exports = forge.Component
     }
 
   , addComponents ( /* string list */ )
-    { for ( let i = 0, len = arguments.length; i < len; i++ )
+    { let len = arguments.length
+      let set = arguments [ len - 1 ]
+      if ( typeof set === 'object' )
+      { len--
+      }
+      else
+      { set = null
+      }
+
+      for ( let i = 0; i < len; i++ )
       { this.addComponent ( arguments [ i ] )
+      }
+
+      if ( set )
+      { this.set ( set )
+      }
+    }
+
+  // Call multiple methods. Method call order is undefined. This pattern makes
+  // it easy to setup objects without the 'chain methods by returning this'
+  // hack.
+  , set ( definition )
+    { for ( let key in definition )
+      { if ( definition.hasOwnProperty ( key ) )
+        { let method = this [ key ]
+          if ( !method )
+          { throw new Error
+            ( `Cannot set '${key}' (no method with this name).` )
+          }
+
+          method.call ( this, definition [ key ] )
+        }
       }
     }
 

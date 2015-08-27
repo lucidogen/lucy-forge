@@ -278,7 +278,31 @@ describe ( 'forge'
             e.name ( 'John' )
             e.age ( 53 )
             e.contactCard ()
-            .should.equal ( '{"name": "John", "age": 53}' )
+            .should.equal ( 'name: John, age: 53' )
+          }
+        )
+
+        it
+        ( 'should enable method call through object on creation or #set'
+        , function ()
+          { e = forge.Entity
+            ( 'Person'
+            , { name: 'Lea'
+              , age:  12
+              }
+            )
+
+            e.contactCard ()
+            .should.equal ( 'name: Lea, age: 12' )
+            
+            e.set
+            ( { name: 'Bob'  // same as this.name ( 'Bob' )
+              , age:  15     // same as this.age  ( 15    )
+              }
+            )
+
+            e.contactCard ()
+            .should.equal ( 'name: Bob, age: 15' )
           }
         )
 
