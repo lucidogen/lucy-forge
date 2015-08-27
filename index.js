@@ -165,8 +165,8 @@ lib.components = function ()
  */
 lib.findComponent = findComponent
 
-/* Create a new component.
- *
+/* Create or update a new component. This method can also be used to
+ * find already loaded component.
  */
 lib.Component = function ( name, definition )
 { let self  = components [ name ]

@@ -19,13 +19,13 @@ module.exports = forge.Component
 ( 'Core'
 , { _init () // Special case for Core.init to avoid calling it twice
              // once before and once inside #addComponent.
-    { this._core = { components: [] }
+    { this._core = { compNames: [] }
     }
 
   , addComponent ( compName )
     { let comp  = findComponent ( compName )
-      let components = this._core.components
-      let readd = components.indexOf ( comp._forge.name ) !== -1
+      let compNames = this._core.compNames
+      let readd = compNames.indexOf ( comp._forge.name ) !== -1
 
       _copyCompMethods.call ( this , comp )
 
@@ -36,14 +36,30 @@ module.exports = forge.Component
         }
 
         comp.entities.push ( this )
-        components.push ( comp._forge.name )
+        compNames.push ( comp._forge.name )
       }
     }
 
   , has ( compName )
-    { return this._core.components.indexOf ( compName ) !== -1
+    { return this._core.compNames.indexOf ( compName ) !== -1
     }
    
+  , destroy ()
+    { let compNames = this._core.compNames
+      let knowncomps = forge.components ()
+
+      for ( let i = 0, len = compNames.length; i < len; i++ )
+      { let comp = knowncomps [ compNames [ i ] ]
+        let entities = comp.entities
+        let idx = entities.indexOf ( this )
+        if ( idx !== -1 )
+        { entities.splice ( idx, 1 )
+        }
+      }
+
+      this._core.compNames = []
+    }
+
   , _copyCompMethods
   }
 )

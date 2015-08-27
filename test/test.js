@@ -105,12 +105,23 @@ describe ( 'forge'
         )
 
         it
-        ( 'should find component'
+        ( 'should find loaded component'
         , function ()
           { let c = forge.Component ( 'Foo' )
             forge.components ()
             .Foo
             .should.equal ( c )
+          }
+        )
+
+        it
+        ( 'should list #entities'
+        , function ()
+          { let c  = forge.Component ( 'Foo' )
+            let e1 = forge.Entity ( 'Foo' )
+            c.entities
+            .should.deep.equal ( [ e1 ] )
+            e1.destroy ()
           }
         )
 
@@ -141,10 +152,18 @@ describe ( 'forge'
     describe
     ( 'Entity'
     , function ()
-      { it
+      { let e
+
+        afterEach
+        ( function ()
+          { e.destroy ()
+          }
+        )
+        
+        it
         ( 'should create an entity'
         , function ()
-          { let e = forge.Entity ( 'Name', 'Foo' )
+          { e = forge.Entity ( 'Name', 'Foo' )
             e.type
             .should.equal ( 'forge.Entity' )
           }
@@ -153,7 +172,7 @@ describe ( 'forge'
         it
         ( 'should get a copy of component methods'
         , function ()
-          { let e   = forge.Entity ( 'Name', 'Foo' )
+          { e = forge.Entity ( 'Name', 'Foo' )
             let Foo = forge.components ().Foo
             e.foo
             .should.equal ( Foo.foo )
@@ -163,7 +182,7 @@ describe ( 'forge'
         it
         ( 'should call init from all components'
         , function ()
-          { let e   = forge.Entity ( 'Name', 'Foo' )
+          { e = forge.Entity ( 'Name', 'Foo' )
             e._name
             .should.equal ( 'No name' )
             
@@ -175,7 +194,7 @@ describe ( 'forge'
         it
         ( 'respond to #has component'
         , function ()
-          { let e   = forge.Entity ( 'Name', 'Foo' )
+          { e = forge.Entity ( 'Name', 'Foo' )
             e.has ( 'Name' )
             .should.be.true
             
@@ -190,9 +209,35 @@ describe ( 'forge'
         it
         ( 'should add Core to all entities'
         , function ()
-          { let e = forge.Entity ( 'Foo' )
+          { e = forge.Entity ( 'Foo' )
             e.has ( 'Core' )
             .should.be.true
+          }
+        )
+
+        it
+        ( 'should remove entity from components on #destroy'
+        , function ()
+          { let c1 = forge.Component ( 'Foo' )
+            let c2 = forge.Component ( 'Name' )
+            let c3 = forge.Component ( 'Core' )
+
+            e = forge.Entity ( 'Foo', 'Name' )
+            c1.entities
+            .should.deep.equal ( [ e ] )
+            c2.entities
+            .should.deep.equal ( [ e ] )
+            c3.entities
+            .should.deep.equal ( [ e ] )
+
+            e.destroy ()
+
+            c1.entities
+            .should.deep.equal ( [ ] )
+            c2.entities
+            .should.deep.equal ( [ ] )
+            c3.entities
+            .should.deep.equal ( [ ] )
           }
         )
 
