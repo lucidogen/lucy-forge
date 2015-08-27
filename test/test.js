@@ -271,6 +271,17 @@ describe ( 'forge'
           }
         )
 
+        it
+        ( 'should enable cross component dependency with #addComponent(s)'
+        , function ()
+          { e = forge.Entity ( 'Person' )
+            e.name ( 'John' )
+            e.age ( 53 )
+            e.contactCard ()
+            .should.equal ( '{"name": "John", "age": 53}' )
+          }
+        )
+
         describe
         ( '#bind'
         , function ()

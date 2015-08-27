@@ -201,9 +201,10 @@ lib.Component = function ( name, definition )
   return self
 }
 
-const Core         = findComponent ( 'Core' )
-const addComponent = Core.addComponent
-const coreInit     = Core._init
+const Core          = findComponent ( 'Core' )
+const addComponent  = Core.addComponent
+const coreInit      = Core._init
+const addComponents = Core.addComponents
 
 /** Create a new entity from the given list of components.
  */
@@ -213,9 +214,8 @@ lib.Entity = function ()
   coreInit.call ( self )
   addComponent.call ( self, 'Core' )
 
-  for ( let i = 0, len = arguments.length; i < len; i++ )
-  { self.addComponent ( arguments [ i ] )
-  }
+  addComponents.apply ( self, arguments )
+
   return self
 }
 

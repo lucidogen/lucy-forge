@@ -43,6 +43,12 @@ module.exports = forge.Component
       }
     }
 
+  , addComponents ( /* string list */ )
+    { for ( let i = 0, len = arguments.length; i < len; i++ )
+      { this.addComponent ( arguments [ i ] )
+      }
+    }
+
   , has ( compName )
     { return this._core.compNames.indexOf ( compName ) !== -1
     }
