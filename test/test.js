@@ -79,7 +79,7 @@ describe ( 'forge'
         ( 'should set name'
         , function ()
           { let p = forge.Component ( 'Bar' )
-            p._info.name
+            p._forge.name
             .should.equal ( 'Bar' )
           }
         )
@@ -157,6 +157,46 @@ describe ( 'forge'
             
             e._foo
             .should.equal ( 'Foo' )
+          }
+        )
+
+        it
+        ( 'respond to #has component'
+        , function ()
+          { let e   = forge.Entity ( 'Name', 'Foo' )
+            e.has ( 'Name' )
+            .should.be.true
+            
+            e.has ( 'Foo' )
+            .should.be.true
+
+            e.has ( 'Bar' )
+            .should.be.false
+          }
+        )
+
+        describe
+        ( 'Changing component during runtime'
+        , function ()
+          { it
+            ( 'should update created entities'
+            , function ()
+              { let e = forge.Entity ( 'Name', 'Foo' )
+                e.foo ()
+                .should.equal ( 'I am foo' )
+                
+                forge.Component
+                ( 'Foo'
+                , { foo ()
+                    { return 'I am new foo'
+                    }
+                  }
+                )
+
+                e.foo ()
+                .should.equal ( 'I am new foo' )
+              }
+            )
           }
         )
       }

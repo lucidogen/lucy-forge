@@ -116,7 +116,7 @@ const findComponent = function ( name )
   { // no definition for this component found. Use a dummy component as 'family'
     // marker.
     let c = lib.Component ( name )
-    c._info.dummy = true
+    c._forge.dummy = true
     return c
   }
 
@@ -125,7 +125,7 @@ const findComponent = function ( name )
   // TODO: If forge.live == true, we do a 'require' and then a live.require to
   // continue executing the component definition on file change.
   let c = require ( f )
-  if ( c._info.name !== name )
+  if ( c._forge.name !== name )
   { throw new Error
     ( `Invalid component at path '${f}' (name '' does not match filename).`)
   }
@@ -135,12 +135,17 @@ const findComponent = function ( name )
 
 const copyCompMethods = function ( target, source )
 { for ( let key in source )
-  { if ( key != '_info' && key != 'init' && key != 'type' )
+  { if ( key != '_forge' && key != 'init' && key != 'type' )
     { if ( source.hasOwnProperty ( key ) )
       { target [ key ] = source [ key ]
       }
     }
   }
+}
+
+const Entity = function ()
+{ this.type = 'forge.Entity'
+  return this
 }
 
 /////////////////////////////// Public
@@ -174,9 +179,9 @@ lib.components = function ()
 lib.Component = function ( name, definition )
 { let self = components [ name ] || {}
   components [ name ] = self
-  let info = self._info || {}
+  let info = self._forge || {}
   info.name = name
-  self._info = info
+  self._forge = info
 
   self.type = 'forge.Component'
 
@@ -193,16 +198,31 @@ lib.Component = function ( name, definition )
 /** Create a new entity from the given list of components.
  */
 lib.Entity = function ()
-{ let self = { type: 'forge.Entity' }
+{ let self = new Entity ()
+  let info = { components: [] }
+  let components = info.components
+  self._forge = info
+
   for ( let i = 0, len = arguments.length; i < len; i++ )
   { let name = arguments [ i ]
     let comp = findComponent ( name )
     copyCompMethods ( self, comp )
+    components.push ( comp._forge.name )
+
     if ( comp.init )
     { comp.init.call ( self )
     }
   }
   return self
+}
+
+Entity.prototype =
+{ destroy ()
+  { } // TODO: remove from components
+
+, has ( compName )
+  { return this._forge.components.indexOf ( compName ) !== -1
+  }
 }
 
 module.exports = lib
