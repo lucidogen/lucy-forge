@@ -105,6 +105,16 @@ describe ( 'forge'
         )
 
         it
+        ( 'should find component'
+        , function ()
+          { let c = forge.Component ( 'Foo' )
+            forge.components ()
+            .Foo
+            .should.equal ( c )
+          }
+        )
+
+        it
         ( 'should add methods to component definition'
         , function ()
           { let def =

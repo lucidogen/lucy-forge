@@ -180,7 +180,7 @@ lib.Component = function ( name, definition )
     components [ name ] = self
   }
 
-  definition = definition || {}
+  if ( !definition ) return self
 
   for ( let key in definition )
   { if ( key != '_forge' && key != 'type' )
