@@ -42,6 +42,7 @@ const path   = require ( 'path'   )
 const fs     = require ( 'fs'     )
 
 const lib = {}
+module.exports = lib
 
 /////////////////////////////// Private
 
@@ -133,21 +134,6 @@ const findComponent = function ( name )
   return c
 }
 
-const copyCompMethods = function ( target, source )
-{ for ( let key in source )
-  { if ( key != '_forge' && key != 'init' && key != 'type' )
-    { if ( source.hasOwnProperty ( key ) )
-      { target [ key ] = source [ key ]
-      }
-    }
-  }
-}
-
-const Entity = function ()
-{ this.type = 'forge.Entity'
-  return this
-}
-
 /////////////////////////////// Public
 
 /** Add a path to search for components.
@@ -161,6 +147,8 @@ lib.addLoadPath = function ( path )
   }
 }
 
+lib.addLoadPath ( './components' )
+
 /** List load paths.
  */
 lib.loadPaths = function ()
@@ -173,56 +161,61 @@ lib.components = function ()
 { return components
 }
 
+/** Find a component by name.
+ */
+lib.findComponent = findComponent
+
 /* Create a new component.
  *
  */
 lib.Component = function ( name, definition )
-{ let self = components [ name ] || {}
-  components [ name ] = self
-  let info = self._forge || {}
-  info.name = name
-  self._forge = info
-
-  self.type = 'forge.Component'
+{ let self  = components [ name ]
+  let isNew = self === undefined
+  if ( isNew )
+  { self =
+    { _forge: { name }
+    , type:   'forge.Component'
+    , entities: []
+    }
+    components [ name ] = self
+  }
 
   definition = definition || {}
 
-  copyCompMethods ( self, definition )
+  for ( let key in definition )
+  { if ( key != '_forge' && key != 'type' )
+    { if ( definition.hasOwnProperty ( key ) )
+      { self [ key ] = definition [ key ]
+      }
+    }
+  }
 
-  // 'init' is not copied by copyCompMethods
-  self.init = definition.init
+  if ( !isNew ) // Code reload
+  { let entities = self.entities
+    for ( let i = 0, len = entities.length; i < len; i++ )
+    { entities [ i ]
+      ._copyCompMethods ( self )
+    }
+  }
 
   return self
 }
+
+const Core         = findComponent ( 'Core' )
+const addComponent = Core.addComponent
+const coreInit     = Core._init
 
 /** Create a new entity from the given list of components.
  */
 lib.Entity = function ()
-{ let self = new Entity ()
-  let info = { components: [] }
-  let components = info.components
-  self._forge = info
+{ let self = { type: 'forge.Entity' }
+
+  coreInit.call ( self )
+  addComponent.call ( self, 'Core' )
 
   for ( let i = 0, len = arguments.length; i < len; i++ )
-  { let name = arguments [ i ]
-    let comp = findComponent ( name )
-    copyCompMethods ( self, comp )
-    components.push ( comp._forge.name )
-
-    if ( comp.init )
-    { comp.init.call ( self )
-    }
+  { self.addComponent ( arguments [ i ] )
   }
   return self
 }
 
-Entity.prototype =
-{ destroy ()
-  { } // TODO: remove from components
-
-, has ( compName )
-  { return this._forge.components.indexOf ( compName ) !== -1
-  }
-}
-
-module.exports = lib

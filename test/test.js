@@ -5,7 +5,7 @@ require ( 'chai' )
 
 const forge = require ( '../index' )
 const path  = require ( 'path' )
-const base  = path.resolve ( __dirname, 'fixtures' )
+const base  = path.resolve ( __dirname, '../components' )
 
 
 describe ( 'forge'
@@ -22,7 +22,8 @@ describe ( 'forge'
             forge.loadPaths ()
             .should
             .deep.equal
-            ( [ __dirname + '/fixtures'
+            ( [ base
+              , __dirname + '/fixtures'
               ]
             )
           }
@@ -38,7 +39,8 @@ describe ( 'forge'
             forge.loadPaths ()
             .should
             .deep.equal
-            ( [ __dirname + '/fixtures'
+            ( [ base
+              , __dirname + '/fixtures'
               ]
             )
           }
@@ -175,6 +177,15 @@ describe ( 'forge'
           }
         )
 
+        it
+        ( 'should add Core to all entities'
+        , function ()
+          { let e = forge.Entity ( 'Foo' )
+            e.has ( 'Core' )
+            .should.be.true
+          }
+        )
+
         describe
         ( 'Changing component during runtime'
         , function ()
@@ -183,18 +194,18 @@ describe ( 'forge'
             , function ()
               { let e = forge.Entity ( 'Name', 'Foo' )
                 e.foo ()
-                .should.equal ( 'I am foo' )
+                .should.equal ( 'I am foo.' )
                 
                 forge.Component
                 ( 'Foo'
                 , { foo ()
-                    { return 'I am new foo'
+                    { return 'I am new foo.'
                     }
                   }
                 )
 
                 e.foo ()
-                .should.equal ( 'I am new foo' )
+                .should.equal ( 'I am new foo.' )
               }
             )
           }
