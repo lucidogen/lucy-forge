@@ -1,42 +1,18 @@
 # Thoughts inspired by Crafty.js
 
-## listen and emit events
+## Bind and emit events
+
 One component can emit events (blindly) and another will react to this event by
 listening for it. For example, the Color component might emit 'redraw' and the
 rendering component would update the color by listening to this event.
 
-  // A Component handling color
-  module.exports = forge.Component
-  ( 'Color'
-  , { init ()  // This method is 'NOT' added to the entity when used but
-               // it is called on entity creation. `this` is the entity
-               // being created.
-      { this._color = { r: 0, g: 0, b: 0 }
-        this.emit ( 'color', this._color )
-      }
-    , color ( r, g, b )
-      { this._color = { r, g, b }
-        this.emit ( 'color', this._color )
-        return this
-      }
-    }
-  )
+## On 'return this'
 
-And here is a dummy 3D component that would use the information provided by the
-'color' event.
+Chaining method calls can be nice since it makes for a little less typing
+(actually just the number of letters in the variable). But there are a couple of
+problems with this approach.
 
-  module.exports = forge.Component
-  ( 'THREE.Mesh'
-  , { init ()
-      { let mesh   = ...
-        this._mesh = mesh
-
-        this.listen
-        ( 'color'
-        , function ( c )
-          { mesh.uniforms.color = [ c.r, c.g, c.b ]
-          }
-        )
-      }
-    }
-  )
+  * It forces all functions to 'return this' or to mark those compatible with
+    this style to differenciate them from the others.
+  * As a corrolary, it forbids the use of functions returning something possibly
+    more useful then 'this'
