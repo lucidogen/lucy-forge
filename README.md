@@ -1,8 +1,4 @@
-# Lucy forge  
-
-Currently only works with iojs.
-
-The failing travis-ci build is related to node.js environment. [![Build Status](https://travis-ci.org/lucidogen/lucy-forge.svg)](https://travis-ci.org/lucidogen/lucy-forge)
+# Lucy forge  [![Build Status](https://travis-ci.org/lucidogen/lucy-forge.svg)](https://travis-ci.org/lucidogen/lucy-forge)
 
 ## Entity and component definition tool
 
@@ -10,9 +6,17 @@ lucy.forge is a minimal 'game' or 'feature composition' engine. It's goal is to
 foster clean and reusable Javascript code through the extensive use of mixins
 and conventions.
 
+## Installation
+
+Currently only works with (**io.js**)[https://iojs.org].
+
+  ```shell
+  npm install lucidogen/lucy-forge --save
+  ```
+
 ### Usage example:
 
-```js
+  ```Javascript
   const forge = require ( 'lucy-forge' )
 
   // Define a component
@@ -39,25 +43,20 @@ and conventions.
     , score: 100
     }
   )
-```
+  ```
 
-## Installation
-
-```shell
-  npm install lucidogen/lucy-forge --save
-```
 
 ## Tests
 
-```shell
+  ```Shell
    make
-```
+  ```
 
 ## Contributing
 
 Please use ['jessy style'](http://github.com/lucidogen/jessy).
 
-Add unit tests for any new or changed functionality. Lint and test your code.
+Add unit tests for any new or changed functionality.
 
 ## Release History
 
