@@ -8,7 +8,7 @@ and conventions.
 
 ## Installation
 
-Currently only works with (**io.js**)[https://iojs.org].
+Currently only works with [**io.js**](https://iojs.org).
 
   ```shell
   npm install lucidogen/lucy-forge --save
