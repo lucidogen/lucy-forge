@@ -9,7 +9,7 @@ and conventions.
 ### Usage example:
 
 ```js
-  const forge = require('lucy-forge')
+  const forge = require ( 'lucy-forge' )
 
   // Define a component
   // for auto-loading, the path for this component should be 'Name.js'
@@ -31,8 +31,10 @@ and conventions.
   let player1 = forge.Entity
   ( 'Name'
   , 'Score'
+  , { name: 'John Difool'
+    , score: 100
+    }
   )
-  .name  ( 'John Difool' )
 ```
 
 ## Installation
