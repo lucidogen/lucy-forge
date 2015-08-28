@@ -1,4 +1,8 @@
-# Lucy forge
+# Lucy forge  
+
+Currently only works with iojs.
+
+The failing travis-ci build is related to node.js environment. [![Build Status](https://travis-ci.org/lucidogen/lucy-forge.svg)](https://travis-ci.org/lucidogen/lucy-forge)
 
 ## Entity and component definition tool
 
