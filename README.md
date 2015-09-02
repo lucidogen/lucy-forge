@@ -1,5 +1,7 @@
 # Lucy forge  [![Build Status](https://travis-ci.org/lucidogen/lucy-forge.svg)](https://travis-ci.org/lucidogen/lucy-forge)
 
+Part of [lucidity](http://lucidity.io) project.
+
 ## Entity and component definition tool
 
 lucy.forge is a minimal 'game' or 'feature composition' engine. It's goal is to
@@ -11,7 +13,7 @@ and conventions.
 Currently only works with [**io.js**](https://iojs.org).
 
   ```shell
-  npm install lucidogen/lucy-forge --save
+  npm install lucy-forge --save
   ```
 
 ### Usage example:
@@ -60,4 +62,4 @@ Add unit tests for any new or changed functionality.
 
 ## Release History
 
-* 0.1.0 Initial release
+* 0.1.0 (2015-09-02) Initial release.
