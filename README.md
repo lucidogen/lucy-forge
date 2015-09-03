@@ -62,4 +62,5 @@ Add unit tests for any new or changed functionality.
 
 ## Release History
 
+* 0.2.0 (2015-09-03) Adding possibility to replace binding.
 * 0.1.0 (2015-09-02) Initial release.

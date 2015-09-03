@@ -99,18 +99,50 @@ module.exports = forge.Component
       this._core.compNames = []
     }
     
+    // Passing a previous callback to `bind` replaces this callback instead
+    // of adding a new one.
   , bind ( event, callback )
-    { let callbacksByEvent = this._core.callbacksByEvent
+    { let replacedCallback = null
+
+      if ( typeof event === 'function' )
+      { // update existing binding with new callback
+        replacedCallback = event
+        event = replacedCallback.event
+      }
+
+      if ( ! callback )
+      { callback = function () {}
+      }
+      callback.event = event
+
+      let callbacksByEvent = this._core.callbacksByEvent
       let callbacks = callbacksByEvent [ event ]
       if ( ! callbacks )
       { callbacksByEvent [ event ] = callback
       }
       else if ( typeof callbacks === 'function' )
-      { callbacksByEvent [ event ] = [ callbacks, callback ]
+      { if ( replacedCallback )
+        { callbacksByEvent [ event ] = callback
+        }
+        else
+        { callbacksByEvent [ event ] = [ callbacks, callback ]
+        }
       }
       else
-      { callbacks.push ( callback )
+      { if ( replacedCallback )
+        { let i = callbacks.indexOf ( replacedCallback )
+          if ( i < 0 )
+          { throw new Error
+            ( `Invalid function passed to replace callback.` )
+          }
+          callbacks [ i ] = callback
+        }
+        else
+        { callbacks.push ( callback )
+        }
       }
+
+      return callback
     }
 
   , emit ( event, data )

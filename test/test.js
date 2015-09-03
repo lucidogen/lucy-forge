@@ -330,6 +330,34 @@ describe ( 'forge'
                 .should.equal ( 'Hit Test' )
               }
             )
+           
+            it
+            ( 'should replace callback'
+            , function ()
+              { e = forge.Entity ()
+                e._test = ''
+                let b = e.bind
+                ( 'Hit'
+                , function ()
+                  { this._test = 'Hit Test'
+                  }
+                )
+                b
+                .should.be.a ( 'function' )
+
+                b = e.bind
+                ( b
+                , function ()
+                  { this._test2 = 'Hit2 Test'
+                  }
+                )
+                e.emit ( 'Hit' )
+                e._test
+                .should.equal ( '' )
+                e._test2
+                .should.equal ( 'Hit2 Test' )
+              }
+            )
           }
         )
       }
