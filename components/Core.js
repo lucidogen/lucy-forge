@@ -6,10 +6,8 @@ const findComponent = forge.findComponent
 
 const _copyCompMethods = function ( source )
 { for ( let key in source )
-  { if ( key != '_forge' && key != 'init' && key != 'type' )
-    { if ( source.hasOwnProperty ( key ) )
-      { this [ key ] = source [ key ]
-      }
+  { if ( source.hasOwnProperty ( key ) )
+    { this [ key ] = source [ key ]
     }
   }
 }
@@ -28,12 +26,13 @@ module.exports = forge.Component
   , addComponent ( compName )
     { let comp  = findComponent ( compName )
       let compNames = this._core.compNames
+      // re-add
       let readd = compNames.indexOf ( comp._forge.name ) !== -1
 
-      _copyCompMethods.call ( this , comp )
+      _copyCompMethods.call ( this , comp.methods )
 
       // Do not call init or components.push more then once
-      if ( !readd )
+      if ( ! readd )
       { if ( comp.init )
         { comp.init.call ( this )
         }

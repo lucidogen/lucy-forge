@@ -168,12 +168,13 @@ lib.findComponent = findComponent
 /* Create or update a new component. This method can also be used to
  * find already loaded component.
  */
-lib.Component = function ( name, definition )
+lib.Component = function ( name, definition, classMethods )
 { let self  = components [ name ]
   let isNew = self === undefined
   if ( isNew )
   { self =
     { _forge: { name }
+    , methods: {}
     , type:   'forge.Component'
     , entities: []
     }
@@ -182,29 +183,33 @@ lib.Component = function ( name, definition )
 
   if ( !definition ) return self
 
+  let methods = self.methods
   for ( let key in definition )
-  { if ( key != '_forge' && key != 'type' )
-    { if ( definition.hasOwnProperty ( key ) )
-      { self [ key ] = definition [ key ]
+  { if ( definition.hasOwnProperty ( key ) )
+    { if ( key == 'init' )
+      { self.init = definition.init
+      }
+      else
+      { methods [ key ] = definition [ key ]
       }
     }
   }
 
-  if ( !isNew ) // Code reload
+  if ( ! isNew ) // Code reload
   { let entities = self.entities
     for ( let i = 0, len = entities.length; i < len; i++ )
     { entities [ i ]
-      ._copyCompMethods ( self )
+      ._copyCompMethods ( methods )
     }
   }
 
   return self
 }
 
-const Core          = findComponent ( 'Core' )
-const addComponent  = Core.addComponent
-const coreInit      = Core._init
-const addComponents = Core.addComponents
+const coreMethods   = findComponent ( 'Core' ).methods
+const addComponent  = coreMethods.addComponent
+const coreInit      = coreMethods._init
+const addComponents = coreMethods.addComponents
 
 /** Create a new entity from the given list of components.
  */

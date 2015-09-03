@@ -149,7 +149,7 @@ describe ( 'forge'
             let p = forge.Component ( 'Foo', def )
 
             forge.components ()
-            .Foo.foo
+            .Foo.methods.foo
             .should.equal ( def.foo )
 
           }
@@ -175,7 +175,7 @@ describe ( 'forge'
           { e = forge.Entity ( 'Name', 'Foo' )
             let Foo = forge.components ().Foo
             e.foo
-            .should.equal ( Foo.foo )
+            .should.equal ( Foo.methods.foo )
           }
         )
 
