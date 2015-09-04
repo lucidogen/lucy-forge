@@ -4,6 +4,7 @@ const findComponent = forge.findComponent
 
 // PRIVATE
 
+const shift = Array.prototype.shift
 const _merge = forge._merge
 
 // PUBLIC
@@ -144,16 +145,17 @@ module.exports = forge.Component
       return callback
     }
 
-  , emit ( event, data )
-    { let callbacks = this._core.callbacksByEvent [ event ]
+  , emit ( )
+    { let event = shift.call ( arguments )
+      let callbacks = this._core.callbacksByEvent [ event ]
       if ( ! callbacks ) return
       if ( typeof callbacks === 'function' ) // single listener optimization
-      { callbacks.call ( this, data )
+      { callbacks.apply ( this, arguments )
       }
       else
       { for ( let i = 0, len = callbacks.length; i < len; i++ )
         { callbacks [ i ]
-          .call ( this, data )
+          .apply ( this, arguments )
         }
       }
     }

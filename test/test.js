@@ -338,14 +338,14 @@ describe ( 'forge'
         ( '#bind'
         , function ()
           { it
-            ( 'should execute callback with this on emit'
+            ( 'should execute callback on emit'
             , function ()
               { e = forge.Entity ()
                 e._test = ''
                 e.bind
                 ( 'Hit'
-                , function ()
-                  { this._test = 'Hit Test'
+                , function ( a, msg )
+                  { this._test = msg
                   }
                 )
 
@@ -353,9 +353,9 @@ describe ( 'forge'
                 e._test
                 .should.equal ( '' )
                 
-                e.emit ( 'Hit' )
+                e.emit ( 'Hit', 50, 'My Hit' )
                 e._test
-                .should.equal ( 'Hit Test' )
+                .should.equal ( 'My Hit' )
               }
             )
            

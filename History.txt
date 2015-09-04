@@ -1,3 +1,7 @@
+== 0.4.0
+
+  * Support for multiple arguments in 'emit'.
+
 == 0.3.0 2015-09-04
 
   * API change for forge.Component. 'init' is now a class method with entity as
