@@ -2,6 +2,8 @@
 
 Part of [lucidity](http://lucidity.io) project.
 
+Beta software. Until 1.0, API subject to change.
+
 ## Entity and component definition tool
 
 lucy.forge is a minimal 'game' or 'feature composition' engine. It's goal is to
@@ -62,5 +64,6 @@ Add unit tests for any new or changed functionality.
 
 ## Release History
 
+* 0.3.0 (2015-09-04) API change for forge.Component with class methods.
 * 0.2.0 (2015-09-03) Adding possibility to replace binding.
 * 0.1.0 (2015-09-02) Initial release.

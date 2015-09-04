@@ -4,37 +4,36 @@ const findComponent = forge.findComponent
 
 // PRIVATE
 
-const _copyCompMethods = function ( source )
-{ for ( let key in source )
-  { if ( source.hasOwnProperty ( key ) )
-    { this [ key ] = source [ key ]
-    }
-  }
-}
+const _merge = forge._merge
 
 // PUBLIC
 module.exports = forge.Component
 ( 'Core'
-, { _init () // Special case for Core.init to avoid calling it twice
-             // once before and once inside #addComponent.
-    { this._core =
-      { compNames: []
-      , callbacksByEvent: {} // maps event => callback array
+  // Class methods
+, { makeEntity ( args )
+    { let self =
+      { type: 'forge.Entity'
+      , _core:
+        { compNames: []
+        , callbacksByEvent: {} // maps event => callback array
+        }
       }
+      return self
     }
-
-  , addComponent ( compName )
+  }
+  // Methods
+, { addComponent ( compName )
     { let comp  = findComponent ( compName )
       let compNames = this._core.compNames
       // re-add
       let readd = compNames.indexOf ( comp._forge.name ) !== -1
 
-      _copyCompMethods.call ( this , comp.methods )
+      _merge ( this, comp.methods )
 
       // Do not call init or components.push more then once
       if ( ! readd )
       { if ( comp.init )
-        { comp.init.call ( this )
+        { comp.init ( this )
         }
 
         comp.entities.push ( this )
@@ -96,6 +95,7 @@ module.exports = forge.Component
       }
 
       this._core.compNames = []
+      this.emit ( 'destroy' )
     }
     
     // Passing a previous callback to `bind` replaces this callback instead
@@ -157,7 +157,6 @@ module.exports = forge.Component
         }
       }
     }
-
-  , _copyCompMethods
   }
 )
+

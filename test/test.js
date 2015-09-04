@@ -99,6 +99,12 @@ describe ( 'forge'
         , function ()
           { let p = forge.Component
             ( 'Foo'
+              // Class methods
+            , { init ( e )
+                {
+                }
+              }
+              // Methods
             , { foo: function ()
                 { return 'I am foo.'
                 }
@@ -137,21 +143,42 @@ describe ( 'forge'
         ( 'should add methods to component definition'
         , function ()
           { let def =
-            { init ()
-              { this._foo = 'Foo'
-              }
-
-            , foo ()
+            { foo ()
               { return 'I am foo.'
               }
             }
             
-            let p = forge.Component ( 'Foo', def )
+            let p = forge.Component
+            ( 'Foo'
+            , function ( e ) // single class method = init
+              { e._foo = 'Foo'
+              }
+            , def
+            )
 
             forge.components ()
             .Foo.methods.foo
             .should.equal ( def.foo )
 
+          }
+        )
+
+        it
+        ( 'should add class methods'
+        , function ()
+          { let Person = forge.findComponent ( 'Person' )
+            Person.count ()
+            .should.equal ( 0 )
+
+            e = forge.Entity ( 'Person' )
+            
+            Person.count ()
+            .should.equal ( 1 )
+
+            e.destroy ()
+
+            Person.count ()
+            .should.equal ( 0 )
           }
         )
       }
@@ -218,6 +245,7 @@ describe ( 'forge'
                 
                 forge.Component
                 ( 'Foo'
+                , {}
                 , { foo ()
                     { return 'I am new foo.'
                     }

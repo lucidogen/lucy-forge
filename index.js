@@ -134,6 +134,15 @@ const findComponent = function ( name )
   return c
 }
 
+const _merge = function ( target, source )
+{ for ( let key in source )
+  { if ( source.hasOwnProperty ( key ) )
+    { target [ key ] = source [ key ]
+    }
+  }
+}
+lib._merge = _merge
+
 /////////////////////////////// Public
 
 /** Add a path to search for components.
@@ -168,7 +177,7 @@ lib.findComponent = findComponent
 /* Create or update a new component. This method can also be used to
  * find already loaded component.
  */
-lib.Component = function ( name, definition, classMethods )
+lib.Component = function ( name, classMethods, definition )
 { let self  = components [ name ]
   let isNew = self === undefined
   if ( isNew )
@@ -181,42 +190,39 @@ lib.Component = function ( name, definition, classMethods )
     components [ name ] = self
   }
 
-  if ( !definition ) return self
+  if ( !classMethods ) return self
+
+  if ( typeof classMethods == 'function' )
+  { self.init = classMethods
+  }
+  else
+  { _merge ( self, classMethods )
+  }
 
   let methods = self.methods
-  for ( let key in definition )
-  { if ( definition.hasOwnProperty ( key ) )
-    { if ( key == 'init' )
-      { self.init = definition.init
-      }
-      else
-      { methods [ key ] = definition [ key ]
-      }
-    }
-  }
+  _merge ( methods, definition )
 
   if ( ! isNew ) // Code reload
   { let entities = self.entities
     for ( let i = 0, len = entities.length; i < len; i++ )
-    { entities [ i ]
-      ._copyCompMethods ( methods )
+    { _merge ( entities [ i ], methods )
     }
   }
 
   return self
 }
 
-const coreMethods   = findComponent ( 'Core' ).methods
-const addComponent  = coreMethods.addComponent
-const coreInit      = coreMethods._init
-const addComponents = coreMethods.addComponents
+const Core          = findComponent ( 'Core' )
+const makeEntity    = Core.makeEntity
+
+const addComponent  = Core.methods.addComponent
+const addComponents = Core.methods.addComponents
 
 /** Create a new entity from the given list of components.
  */
 lib.Entity = function ()
-{ let self = { type: 'forge.Entity' }
+{ let self = makeEntity ()
 
-  coreInit.call ( self )
   addComponent.call ( self, 'Core' )
 
   addComponents.apply ( self, arguments )

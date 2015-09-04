@@ -1,14 +1,34 @@
+'use strict'
 const forge = require ( '../../index' )
 
 module.exports = forge.Component
 ( 'Person'
-, { init ()
-    { // If a component depends on other components, we simply 'add' them in the
+  // Class methods
+, { init ( e )
+    { // 'this' is the Person class
+      let self = this
+      // If a component depends on other components, we simply 'add' them in the
       // init method. Adding a component more then once is ok.
-      this.addComponent ( 'Name' )
-      this._age = 0
+      e.addComponent ( 'Name' )
+      e._age = 0
+
+      e.bind
+      ( 'destroy'
+      , function ()
+        { self.personCount--
+        }
+      )
+
+      self.personCount++
     }
-  , age ( age )
+  , count ()
+    { return this.personCount
+    }
+  , personCount: 0
+  }
+
+  // Methods added to entities
+, { age ( age )
     { this._age = age
       return this
     }
@@ -16,5 +36,6 @@ module.exports = forge.Component
     { return `name: ${this._name}, age: ${this._age}`
     }
   }
+
 )
 
