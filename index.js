@@ -203,7 +203,7 @@ lib.Component = function ( name, classMethods, definition )
   if ( !classMethods ) return self
 
   if ( typeof classMethods == 'function' )
-  { self.init = classMethods
+  { self.setup = classMethods
   }
   else
   { _merge ( self, classMethods )
@@ -212,8 +212,15 @@ lib.Component = function ( name, classMethods, definition )
   let methods = self.methods
   _merge ( methods, definition )
 
-  if ( ! isNew ) // Code reload
-  { let entities = self.entities
+  if ( isNew ) 
+  { // Object just created
+    if ( self.init )
+    { self.init ()
+    }
+  }
+  else
+  { // Code reload
+    let entities = self.entities
     for ( let i = 0, len = entities.length; i < len; i++ )
     { _merge ( entities [ i ], methods )
     }

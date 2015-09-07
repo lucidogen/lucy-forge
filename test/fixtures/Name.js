@@ -3,7 +3,7 @@ const forge = require ( '../../index' )
 module.exports = forge.Component
 ( 'Name'
   // Class methods
-, { init ( e )
+, { setup ( e )
     { e._name = 'No name'
     }
   }

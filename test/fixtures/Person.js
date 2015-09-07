@@ -4,7 +4,7 @@ const forge = require ( '../../index' )
 module.exports = forge.Component
 ( 'Person'
   // Class methods
-, { init ( e )
+, { setup ( e )
     { // 'this' is the Person class
       let self = this
       // If a component depends on other components, we simply 'add' them in the
@@ -24,7 +24,9 @@ module.exports = forge.Component
   , count ()
     { return this.personCount
     }
-  , personCount: 0
+  , init ()
+    { this.personCount = 0
+    }
   }
 
   // Methods added to entities

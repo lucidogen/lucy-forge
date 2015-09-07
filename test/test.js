@@ -164,7 +164,7 @@ describe ( 'forge'
           { let p = forge.Component
             ( 'Foo'
               // Class methods
-            , { init ( e )
+            , { setup ( e )
                 {
                 }
               }
@@ -214,7 +214,7 @@ describe ( 'forge'
             
             let p = forge.Component
             ( 'Foo'
-            , function ( e ) // single class method = init
+            , function ( e ) // single class method = setup
               { e._foo = 'Foo'
               }
             , def
@@ -271,7 +271,7 @@ describe ( 'forge'
         )
 
         it
-        ( 'should call init from all components'
+        ( 'should call setup from all components'
         , function ()
           { e = forge.Entity ( 'Name', 'Foo' )
             e._name

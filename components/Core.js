@@ -31,10 +31,10 @@ module.exports = forge.Component
 
       _merge ( this, comp.methods )
 
-      // Do not call init or components.push more then once
+      // Do not call setup or components.push more then once
       if ( ! readd )
-      { if ( comp.init )
-        { comp.init ( this )
+      { if ( comp.setup )
+        { comp.setup ( this )
         }
 
         comp.entities.push ( this )
