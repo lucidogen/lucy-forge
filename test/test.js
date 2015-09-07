@@ -74,6 +74,30 @@ describe ( 'forge'
     )
 
     describe
+    ( 'setting componentLoaded'
+    , function ()
+      { it
+        ( 'should execute on Component load'
+        , function ()
+          { let comp, path
+            forge.componentLoaded = function ( c, f )
+            { comp = c
+              path = f
+            }
+            
+            let l = forge.findComponent ( 'Loaded' )
+            comp
+            .should.equal ( l )
+            path
+            .should.match ( /Loaded.js/ )
+          }
+        )
+      }
+    )
+            
+    
+
+    describe
     ( '#findComponent'
     , function ()
       { it

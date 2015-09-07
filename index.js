@@ -136,6 +136,11 @@ const findComponent = function ( name )
     ( `Invalid component '${ f }' (name '${ c._forge.name }' does not match filename).`)
   }
 
+  // Hook for live coding or other post Component load action.
+  if ( lib.componentLoaded )
+  { lib.componentLoaded ( c, f )
+  }
+
   return c
 }
 
