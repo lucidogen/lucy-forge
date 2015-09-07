@@ -370,6 +370,20 @@ describe ( 'forge'
           }
         )
 
+        it
+        ( 'should consider array as list of arguments in #set'
+        , function ()
+          { e = forge.Entity
+            ( 'Person'
+            , { setPerson: [ 'Karl', 37 ]
+              }
+            )
+
+            e.contactCard ()
+            .should.equal ( 'name: Karl, age: 37' )
+          }
+        )
+
         describe
         ( '#bind'
         , function ()

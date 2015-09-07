@@ -32,6 +32,10 @@ module.exports = forge.Component
     { this._age = age
       return this
     }
+  , setPerson ( name, age ) // To test multiple arguments
+    { this.name ( name )
+      this.age  ( age  )
+    }
   , contactCard ()
     { return `name: ${this._name}, age: ${this._age}`
     }

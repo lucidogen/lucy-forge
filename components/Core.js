@@ -73,7 +73,13 @@ module.exports = forge.Component
             ( `Cannot set '${key}' (no method with this name).` )
           }
 
-          method.call ( this, definition [ key ] )
+          let args = definition [ key ]
+          if ( args instanceof Array )
+          { method.apply ( this, args )
+          }
+          else
+          { method.call ( this, args )
+          }
         }
       }
     }
