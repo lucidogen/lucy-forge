@@ -137,8 +137,8 @@ const findComponent = function ( name )
   }
 
   // Hook for live coding or other post Component load action.
-  if ( lib.componentLoaded )
-  { lib.componentLoaded ( c, f )
+  if ( lib._componentLoaded )
+  { lib._componentLoaded ( c, f )
   }
 
   return c
@@ -220,6 +220,10 @@ lib.Component = function ( name, classMethods, definition )
   }
 
   return self
+}
+
+lib.componentLoaded = function ( clbk )
+{ lib._componentLoaded = clbk
 }
 
 const Core          = findComponent ( 'Core' )

@@ -80,16 +80,20 @@ describe ( 'forge'
         ( 'should execute on Component load'
         , function ()
           { let comp, path
-            forge.componentLoaded = function ( c, f )
-            { comp = c
-              path = f
-            }
+            forge.componentLoaded
+            ( function ( c, f )
+              { comp = c
+                path = f
+              }
+            )
             
             let l = forge.findComponent ( 'Loaded' )
             comp
             .should.equal ( l )
             path
             .should.match ( /Loaded.js/ )
+
+            forge.componentLoaded () // remove callback
           }
         )
       }
