@@ -126,7 +126,7 @@ const findComponent = function ( name )
   // TODO: If forge.live == true, we do a 'require' and then a live.require to
   // continue executing the component definition on file change.
   let c = require ( f )
-  if ( c._forge.name !== name )
+  if ( ! c._forge || c._forge.name !== name )
   { throw new Error
     ( `Invalid component at path '${f}' (name '' does not match filename).`)
   }

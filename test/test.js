@@ -72,6 +72,31 @@ describe ( 'forge'
         )
       }
     )
+
+    describe
+    ( '#findComponent'
+    , function ()
+      { it
+        ( 'should find compoent by name'
+        , function ()
+          { forge.findComponent ( 'Name' )
+            .type
+            .should.equal ( 'forge.Component' )
+          }
+        )
+
+        it
+        ( 'should throw error on invalid component'
+        , function ()
+          { 
+            ( function ()
+              { forge.findComponent ( 'Invalid' )
+              }
+            ).should.throw ( /Invalid component/ )
+          }
+        )
+      }
+    )
     
     describe
     ( 'Component'
