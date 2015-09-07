@@ -89,7 +89,15 @@ module.exports = forge.Component
     }
    
   , destroy ()
-    { let compNames = this._core.compNames
+    { if ( arguments.length == 1 )
+      { let c = arguments [ 0 ]
+        if ( c )
+        { c.destroy ()
+        }
+        return
+      }
+
+      let compNames = this._core.compNames
       let knowncomps = forge.components ()
 
       for ( let i = 0, len = compNames.length; i < len; i++ )

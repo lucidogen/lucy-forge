@@ -336,6 +336,34 @@ describe ( 'forge'
         )
 
         it
+        ( 'should remove first argument if exists #destroy'
+        , function ()
+          { let c1 = forge.Component ( 'Foo' )
+            let f = forge.Entity ( 'Foo' )
+
+            e = forge.Entity ( 'Foo' )
+            c1.entities
+            .should.deep.equal ( [ f, e ] )
+
+            e.destroy ( null )
+            c1.entities
+            .should.deep.equal ( [ f, e ] )
+
+            e.destroy ( f )
+            c1.entities
+            .should.deep.equal ( [ e ] )
+            
+            let g = forge.Entity
+            ( 'Foo'
+            , { destroy: e // this is used for live coding to replace object
+              }
+            )
+            c1.entities
+            .should.deep.equal ( [ g ] )
+          }
+        )
+
+        it
         ( 'should enable cross component dependency with #addComponent(s)'
         , function ()
           { e = forge.Entity ( 'Person' )
