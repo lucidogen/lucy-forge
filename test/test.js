@@ -86,13 +86,24 @@ describe ( 'forge'
         )
 
         it
-        ( 'should throw error on invalid component'
+        ( 'should throw error on bad name'
+        , function ()
+          { 
+            ( function ()
+              { forge.findComponent ( 'BadName' )
+              }
+            ).should.throw ( /name 'Bad' does not match filename/ )
+          }
+        )
+
+        it
+        ( 'should throw error on invalid file'
         , function ()
           { 
             ( function ()
               { forge.findComponent ( 'Invalid' )
               }
-            ).should.throw ( /Invalid component/ )
+            ).should.throw ( /is not a 'forge.Component/ )
           }
         )
       }
