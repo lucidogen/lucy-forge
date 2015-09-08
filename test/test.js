@@ -440,6 +440,19 @@ describe ( 'forge'
           }
         )
 
+        it
+        ( 'should return this in #set'
+        , function ()
+          { e = forge.Entity
+            ( 'Person' )
+            .set ( { name: 'Lio' } )
+            .set ( { age: 22     } )
+
+            e.contactCard ()
+            .should.equal ( 'name: Lio, age: 22' )
+          }
+        )
+
         describe
         ( '#bind'
         , function ()

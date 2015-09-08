@@ -82,6 +82,7 @@ module.exports = forge.Component
           }
         }
       }
+      return this
     }
 
   , has ( compName )
