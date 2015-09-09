@@ -1,6 +1,11 @@
-== 0.4.0
+== 0.4.0 2015-09-09
 
   * Support for multiple arguments in 'emit'.
+  * 'setup' to initialize entities.
+  * 'init' to initialize the component itself.
+  * Entity#set (chainable) to call multiple methods.
+  * forge#componentLoaded to add a callback on component load ( for live coding
+    hook for example ).
 
 == 0.3.0 2015-09-04
 
