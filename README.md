@@ -24,29 +24,63 @@ Currently only works with [**io.js**](https://iojs.org).
   const forge = require ( 'lucy-forge' )
 
   // Define a component
-  // for auto-loading, the path for this component should be 'Name.js'
-  const Name = forge.Component
-  ( 'Name'
-  , { init ()  // This method is 'NOT' added to the entity when used but
-               // it is called on entity creation. `this` is the entity
-               // being created.
-      { this._name = 'No name'
+  // for auto-loading, the path for this component should be 'Person.js'
+  const Person = forge.Component
+  ( 'Person'
+    // Class methods
+  , { // Setup an entity. 'e' is the entity being initialized.
+      setup ( e )
+      { e._person = {}
+        Person.people.push ( e )
+
+        e.bind
+        ( 'destroy'
+        , function ()
+          { Person.peopleCount --
+          }
+        )
       }
-    , name ( name )
-      { this._name = name
-        return this
+
+      // This is called once on Component creation. It is used to initialize
+      // the component (not an entity). 'this' is the component aka 'class'.
+      // Here, this === Person.
+    , init ()
+      { this.peopleCount = 0
+      }
+
+    , count ()
+      { return this.peopleCount
+      }
+    }
+
+    // Methods
+  , { person ( name, age )
+      { let self = this._person
+        self.name = name
+        self.age  = age
       }
     }
   )
 
   // Use the component
+  let Person = forge.findComponent ( 'Person' )
+
+  console.log
+  ( Person.count () ) // ==> 0
+
   let player1 = forge.Entity
-  ( 'Name'
+  ( 'Person'
   , 'Score'
-  , { name: 'John Difool'
+    // #set shortcut
+    // same as calling player1.person ( 'John Difool', 34 )
+    //                 player1.score  ( 100 )
+  , { person: [ 'John Difool', 34 ]  
     , score: 100
     }
   )
+
+  console.log
+  ( Person.count () ) // ==> 1
   ```
 
 
