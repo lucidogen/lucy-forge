@@ -144,14 +144,15 @@ const findComponent = function ( name )
   return c
 }
 
-const _merge = function ( target, source )
+const merge = function ( target, source )
 { for ( let key in source )
   { if ( source.hasOwnProperty ( key ) )
     { target [ key ] = source [ key ]
     }
   }
 }
-lib._merge = _merge
+
+lib.merge  = merge
 
 /////////////////////////////// Public
 
@@ -206,11 +207,11 @@ lib.Component = function ( name, classMethods, definition )
   { self.setup = classMethods
   }
   else
-  { _merge ( self, classMethods )
+  { merge ( self, classMethods )
   }
 
   let methods = self.methods
-  _merge ( methods, definition )
+  merge ( methods, definition )
 
   if ( isNew ) 
   { // Object just created
@@ -222,7 +223,7 @@ lib.Component = function ( name, classMethods, definition )
   { // Code reload
     let entities = self.entities
     for ( let i = 0, len = entities.length; i < len; i++ )
-    { _merge ( entities [ i ], methods )
+    { merge ( entities [ i ], methods )
     }
   }
 

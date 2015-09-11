@@ -5,7 +5,7 @@ const findComponent = forge.findComponent
 // PRIVATE
 
 const shift = Array.prototype.shift
-const _merge = forge._merge
+const merge = forge.merge
 
 // PUBLIC
 module.exports = forge.Component
@@ -29,7 +29,7 @@ module.exports = forge.Component
       // re-add
       let readd = compNames.indexOf ( comp._forge.name ) !== -1
 
-      _merge ( this, comp.methods )
+      merge ( this, comp.methods )
 
       // Do not call setup or components.push more then once
       if ( ! readd )
