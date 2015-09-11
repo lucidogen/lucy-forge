@@ -491,8 +491,21 @@ describe ( 'forge'
                 )
                 b
                 .should.be.a ( 'function' )
+                
+                b.idx
+                .should.equal ( 0 )
 
-                b = e.bind
+                let c = e.bind
+                ( 'Hit'
+                , function ()
+                  { this._test3 = 'Hit3'
+                  }
+                )
+
+                c.idx
+                .should.equal ( 1 )
+
+                e.bind
                 ( b
                 , function ()
                   { this._test2 = 'Hit2 Test'
@@ -503,6 +516,8 @@ describe ( 'forge'
                 .should.equal ( '' )
                 e._test2
                 .should.equal ( 'Hit2 Test' )
+                e._test3
+                .should.equal ( 'Hit3' )
               }
             )
           }

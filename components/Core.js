@@ -134,26 +134,31 @@ module.exports = forge.Component
       let callbacks = callbacksByEvent [ event ]
       if ( ! callbacks )
       { callbacksByEvent [ event ] = callback
+        callback.idx = 0
       }
       else if ( typeof callbacks === 'function' )
       { if ( replacedCallback )
         { callbacksByEvent [ event ] = callback
+          callback.idx = 0
         }
         else
         { callbacksByEvent [ event ] = [ callbacks, callback ]
+          callback.idx = 1
         }
       }
       else
       { if ( replacedCallback )
-        { let i = callbacks.indexOf ( replacedCallback )
-          if ( i < 0 )
+        { let i = replacedCallback.idx
+          if ( i == undefined )
           { throw new Error
             ( `Invalid function passed to replace callback.` )
           }
           callbacks [ i ] = callback
+          callback.idx = i
         }
         else
         { callbacks.push ( callback )
+          callback.idx = callbacks.length
         }
       }
 
