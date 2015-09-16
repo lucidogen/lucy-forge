@@ -68,7 +68,7 @@ module.exports = forge.Component
     { for ( let key in definition )
       { if ( definition.hasOwnProperty ( key ) )
         { let method = this [ key ]
-          if ( method )
+          if ( typeof method == 'function' && !method._user_method )
           { let args = definition [ key ]
             if ( args instanceof Array )
             { method.apply ( this, args )
@@ -78,7 +78,14 @@ module.exports = forge.Component
             }
           }
           else
-          { this [ key ] = definition [ key ]
+          { let value = definition [ key ]
+            if ( typeof value == 'function' )
+            { value._user_method = true
+              this [ key ] = value
+            }
+            else
+            { this [ key ] = value
+            }
           }
         }
       }

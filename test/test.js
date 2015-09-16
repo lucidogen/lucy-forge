@@ -451,6 +451,37 @@ describe ( 'forge'
 
             e.foo
             .should.equal ( 'barfoo' )
+            
+            e.set ( { foo: 'bal' } )
+
+            e.foo
+            .should.equal ( 'bal' )
+          }
+        )
+
+        it
+        ( 'should set method with #set'
+        , function ()
+          { e = forge.Entity
+            ( 'Person'
+            , { foo ( m )
+                { if ( m )
+                    throw new Error ('Should not call when replacing function' )
+                  return 'barfoo'
+                }
+              }
+            )
+
+            e.foo ()
+            .should.equal ( 'barfoo' )
+            
+            e.set
+            ( { foo () { return 'bal' }
+              }
+            )
+
+            e.foo ()
+            .should.equal ( 'bal' )
           }
         )
 
