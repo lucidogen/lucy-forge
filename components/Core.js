@@ -68,17 +68,17 @@ module.exports = forge.Component
     { for ( let key in definition )
       { if ( definition.hasOwnProperty ( key ) )
         { let method = this [ key ]
-          if ( !method )
-          { throw new Error
-            ( `Cannot set '${key}' (no method with this name).` )
-          }
-
-          let args = definition [ key ]
-          if ( args instanceof Array )
-          { method.apply ( this, args )
+          if ( method )
+          { let args = definition [ key ]
+            if ( args instanceof Array )
+            { method.apply ( this, args )
+            }
+            else
+            { method.call ( this, args )
+            }
           }
           else
-          { method.call ( this, args )
+          { this [ key ] = definition [ key ]
           }
         }
       }

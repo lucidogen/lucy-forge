@@ -441,6 +441,20 @@ describe ( 'forge'
         )
 
         it
+        ( 'should set elements without methods on #set'
+        , function ()
+          { e = forge.Entity
+            ( 'Person'
+            , { foo: 'barfoo'
+              }
+            )
+
+            e.foo
+            .should.equal ( 'barfoo' )
+          }
+        )
+
+        it
         ( 'should return this in #set'
         , function ()
           { e = forge.Entity
