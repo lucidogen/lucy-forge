@@ -12,8 +12,6 @@ and conventions.
 
 ## Installation
 
-Currently only works with [**io.js**](https://iojs.org).
-
   ```shell
   npm install lucy-forge --save
   ```
