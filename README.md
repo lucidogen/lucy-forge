@@ -16,7 +16,7 @@ and conventions.
   npm install lucy-forge --save
   ```
 
-### Usage example:
+### Usage example
 
   ```js
   const forge = require ( 'lucy-forge' )
