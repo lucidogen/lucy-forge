@@ -152,7 +152,17 @@ const merge = function ( target, source )
   }
 }
 
-lib.merge  = merge
+const setParam = function ( self, key, def, defvalue )
+{ if ( def.hasOwnProperty ( key ) )
+  { self [ key ] = def [ key ]
+  }
+  else if ( ! self.hasOwnProperty ( key ) )
+  { self [ key ] = defvalue
+  }
+}
+
+lib.merge    = merge
+lib.setParam = setParam
 
 /////////////////////////////// Public
 
