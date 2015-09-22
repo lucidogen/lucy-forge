@@ -1,3 +1,11 @@
+== 0.5.0 2015-09-22
+
+  * Enable binding reuse.
+  * Entity#set on missing method should set value.
+  * Entity#set detects user defined methods from component methods.
+  * forge#merge method now public.
+  * compatible with latest node.js (ES6 features).
+
 == 0.4.0 2015-09-09
 
   * Support for multiple arguments in 'emit'.

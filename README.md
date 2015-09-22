@@ -96,6 +96,7 @@ Add unit tests for any new or changed functionality.
 
 ## Release History
 
+* 0.5.0 (2015-09-22) Better #set method, forge.merge.
 * 0.4.0 (2015-09-09) Renaming init to 'setup'. Init is now called on class.
 * 0.3.0 (2015-09-04) API change for forge.Component with class methods.
 * 0.2.0 (2015-09-03) Adding possibility to replace binding.
