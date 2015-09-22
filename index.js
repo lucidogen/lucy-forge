@@ -41,7 +41,7 @@ const caller = require ( 'caller' )
 const path   = require ( 'path'   )
 const fs     = require ( 'fs'     )
 
-const lib = {}
+const lib = {VERSION: '0.5.1'}
 module.exports = lib
 
 /////////////////////////////// Private
